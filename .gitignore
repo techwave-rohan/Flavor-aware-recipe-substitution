@@ -57,8 +57,8 @@ desktop.ini
 *.swp
 *.swo
 
-# Large datasets and outputs (can be tracked via scripts/DVC/cloud)
-# Uncomment or adjust as data directories are established:
-# data/raw/
-# data/processed/
-# checkpoints/
+# Large datasets and outputs
+data/raw/
+*.pkl
+checkpoints/
+
