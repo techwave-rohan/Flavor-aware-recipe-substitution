@@ -1,0 +1,5 @@
+Comparison,Mean Difference,Paired 95% Bootstrap CI,Statistical Significance
+P1: PMI vs. Popularity Baseline (MRR),+0.0362,"[-0.0179, +0.0864]","Includes 0 (Difference within noise; Popularity competitive)"
+P2: Supervised Model vs. PMI Alone (AUROC),+0.0642,"[+0.0410, +0.0875]","Excludes 0 (Statistically Significant)"
+P3: Flavor Jaccard vs. Random Baseline (MRR),+0.0313,"[+0.0050, +0.0568]","Excludes 0 (Statistically Significant)"
+P4: Model vs. Random on Human Labels (Spearman rho),+0.3700,"[+0.2150, +0.5250]","Excludes 0 (Statistically Significant)"

@@ -1,0 +1,6 @@
+Regional Cuisine,Recipes Evaluated,PMI MRR,Flavor Jaccard MRR,Food-Pairing Regime
+USA,166,0.4348,0.1647,Negative / Neutral Pairing
+Italy,80,0.3809,0.2343,Negative / Neutral Pairing
+Mexico,39,0.4468,0.1535,Negative / Neutral Pairing
+Indian Subcontinent,38,0.6216,0.1979,Negative / Neutral Pairing
+France,34,0.4698,0.3017,Negative / Neutral Pairing
