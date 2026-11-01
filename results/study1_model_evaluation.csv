@@ -1,0 +1,4 @@
+Method,Spearman Correlation,AUROC (Label 3 vs 1),Precision @ Top 20%
+Supervised Model,0.370,0.698,16.7%
+PMI (Co-occurrence),0.378,0.709,72.2%
+Flavor Jaccard (Chemistry),0.481,0.903,55.6%
