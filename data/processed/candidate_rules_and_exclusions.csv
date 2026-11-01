@@ -1,0 +1,11 @@
+original,category,candidate,reason,target_nutrient
+butter,Dairy,olive oil,Function-safe cooking fat with 85% lower saturated fat,saturated_fat
+butter,Dairy,canola oil,Neutral baking/cooking fat with 90% lower saturated fat,saturated_fat
+heavy cream,Dairy,greek yogurt,Creamy texture with 80% lower calories & higher protein,calories
+cheddar cheese,Dairy,part-skim mozzarella,Lower saturated fat and calorie density,saturated_fat
+ground beef,Meat,ground turkey,Lean poultry replacement with 60% lower saturated fat,saturated_fat
+bacon,Meat,turkey bacon,Smoky flavor profile with 50% lower calories,calories
+mayonnaise,Plant Derivative,avocado,Emulsion and creamy texture with healthy monounsaturated fat,saturated_fat
+sugar,Plant Derivative,applesauce,Moisture and sweetness in baking with 70% lower calories,calories
+sour cream,Dairy,plain yogurt,Acidity and texture with 65% lower calories,calories
+white rice,Plant,cauliflower rice,Grain substitute with 85% lower calories,calories
