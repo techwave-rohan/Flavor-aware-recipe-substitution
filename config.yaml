@@ -15,10 +15,16 @@ paths:
   labels_dir: "labels"
   notebooks_dir: "notebooks"
   
-  # External / local files
+  # Multi-source open dataset paths
+  culinarydb_recipes: "data/raw/culinarydb/01_Recipe_Details.csv"
+  culinarydb_ingredients: "data/raw/culinarydb/02_Ingredients.csv"
+  culinarydb_aliases: "data/raw/culinarydb/04_Recipe-Ingredients_Aliases.csv"
+  flavordb_molecules: "data/raw/flavordb.csv"
+  flavor_network: "data/raw/flavor_network/srep00196-s2.csv"
+  usda_foods: "data/raw/usda/FoodData_Central_sr_legacy_food_csv_2018-04/food.csv"
+  usda_nutrients: "data/raw/usda/FoodData_Central_sr_legacy_food_csv_2018-04/nutrient.csv"
+  usda_food_nutrients: "data/raw/usda/FoodData_Central_sr_legacy_food_csv_2018-04/food_nutrient.csv"
   food_com_raw: "data/raw/RAW_recipes.csv"
-  recipedb_raw: "data/raw/recipedb.csv"
-  flavordb_raw: "data/raw/flavordb.json"
 
 # Leakage-safe split parameters
 splits:

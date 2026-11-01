@@ -1,79 +1,67 @@
-# Week 1: Data Access and Inspection Report
-**Date:** 2026-10-31
-**Deliverable:** `reports/week1_data_inventory.md`
-**Status:** Completed Task 1 of Week 1 according to `Agent Roadmap v2`.
+# Week 1: Multi-Source Data Access and Inventory Report
 
-## 1. Data Sources Inventory & Access Status
+**Date:** 2026-11-01  
+**Project:** Flavor-Aware Healthier Recipe Substitution (Roadmap v2)  
+**Deliverable:** `reports/week1_data_inventory.md`  
+**Architecture:** Open Multi-Source Gastronomy Stack  
 
-| Source | Description | Access Status | Storage / Location |
-|---|---|---|---|
-| **Food.com** | 231k recipes with recipe-level nutrition & ingredient lists | **Available** | `data/raw/RAW_recipes.csv` |
-| **RecipeDB** | Recipes with gram quantities, 29 categories, 5 dietary styles | **Pending Confirmation** | API / bulk dump to confirm with professor |
-| **FlavorDB** | Flavor molecules per ingredient (chemical profiles) | **Pending Mapping** | FlavorDB mapping to confirm with professor |
-| **Foodoscope API** | Substitution & flavor API (Baseline B6) | **Pending Access** | Optional (IF TIME) |
+---
 
-## 2. Food.com Dataset Profile (`RAW_recipes.csv`)
+## 1. Overview of Open Datasets
 
-- **Total Recipes (Rows):** 231,637
-- **Total Columns:** 12
+Due to access restrictions on proprietary RecipeDB bulk files, the project has adopted the open-science composite stack:
 
-### 2.1 Columns, Dtypes, and Missing Rates
-
-| Column Name | Data Type | Non-Null Count | Missing Count | Missing Rate (%) |
+| Dataset | Provider / Source | Role in Pipeline | Local Storage Path | Status |
 |---|---|---|---|---|
-| `name` | `object` | 231,636 | 1 | 0.000% |
-| `id` | `int64` | 231,637 | 0 | 0.000% |
-| `minutes` | `int64` | 231,637 | 0 | 0.000% |
-| `contributor_id` | `int64` | 231,637 | 0 | 0.000% |
-| `submitted` | `object` | 231,637 | 0 | 0.000% |
-| `tags` | `object` | 231,637 | 0 | 0.000% |
-| `nutrition` | `object` | 231,637 | 0 | 0.000% |
-| `n_steps` | `int64` | 231,637 | 0 | 0.000% |
-| `steps` | `object` | 231,637 | 0 | 0.000% |
-| `description` | `object` | 226,658 | 4,979 | 2.149% |
-| `ingredients` | `object` | 231,637 | 0 | 0.000% |
-| `n_ingredients` | `int64` | 231,637 | 0 | 0.000% |
+| **CulinaryDB** | IIIT-Delhi CoSyLab | Recipe ingredients, 20+ regional cuisines, 985 ingredient categories | `data/raw/culinarydb/` | **Downloaded & Ingested** (45,772 recipes) |
+| **USDA FoodData Central** | US Department of Agriculture (SR Legacy) | Official per-100g nutrient densities (calories, saturated fat, protein, sodium, sugars) | `data/raw/usda/` | **Downloaded & Ingested** (8,618 standard foods) |
+| **FlavorDB** | IIIT-Delhi CoSyLab / GitHub | Food entities mapped to PubChem flavor molecules | `data/raw/flavordb.csv` | **Downloaded & Ingested** (936 food items) |
+| **Flavor Network** | Ahn et al., *Nature* 2011 | Independent bipartite food-pairing network | `data/raw/flavor_network/` | **Downloaded & Ingested** |
+| **Food.com** | Kaggle / Recipe1M | Supplementary large-scale co-occurrence corpus | `data/raw/RAW_recipes.csv` | **Available** (231k recipes) |
 
-### 2.2 Nutrient Availability Analysis
+---
 
-- **Per-Ingredient Nutrients:** **NOT AVAILABLE in Food.com.** Food.com only records recipe-level summary nutrition.
-- **Per-Recipe Nutrition Format:** Vector of 7 float values stored as string `[calories, total_fat, sugar, sodium, protein, saturated_fat, carbohydrates]`.
-- **Sample Raw Nutrition String:** `[51.5, 0.0, 13.0, 0.0, 2.0, 0.0, 4.0]`
-- **Interpretation:** Value 0 is calories; values 1-6 are % Daily Value (PDV).
-> **Important Rule from Roadmap:** Because Food.com lacks per-ingredient gram quantities and nutrient breakdowns, it **must never be used for health gain calculations**; it serves strictly as a fallback prototype for co-occurrence and compatibility measures.
+## 2. In-Depth Profiles of Ingested Datasets
 
-### 2.3 Servings Availability
+### 2.1 CulinaryDB Profile (`data/raw/culinarydb/`)
+- **Total Recipes**: 45,772
+- **Cuisine Taxonomy**: 20+ regional classifications, including:
+  - North American: 11,568 recipes
+  - Southern European: 6,375 recipes
+  - Latin American: 5,333 recipes
+  - Western European: 4,413 recipes
+  - South Asian: 4,222 recipes
+  - East Asian: 2,635 recipes
+  - Middle Eastern: 1,886 recipes
+  - Southeast Asian: 1,622 recipes
+- **Ingredient Taxonomy (`02_Ingredients.csv`)**: 985 unique canonical ingredients with category tags (Plant Derivative, Meat, Dairy, Spice, Fat/Oil, Vegetable, Fruit, etc.).
+- **Recipe Mappings (`04_Recipe-Ingredients_Aliases.csv`)**: 622,357 individual ingredient-to-recipe mappings.
 
-- **Servings Column Present:** `False`
-- **Roadmap Rule:** When servings are absent, relative changes in target nutrients are calculated over the whole-recipe total. Since ingredient replacements are evaluated at equal weight, the percentage change is mathematically identical per serving.
+### 2.2 USDA FoodData Central Profile (`data/raw/usda/`)
+- **Total Foods Profiled**: 8,618 minimally processed and standard reference foods.
+- **Nutrient Densities**: Values provided per 100 grams.
+- **Key Target Nutrients Mapped**:
+  - `Energy` (Nutrient ID: `1008`, Unit: `KCAL`)
+  - `Fatty acids, total saturated` (Nutrient ID: `1258`, Unit: `G`)
+  - `Protein` (Nutrient ID: `1003`, Unit: `G`)
+  - `Sodium, Na` (Nutrient ID: `1093`, Unit: `MG`)
+  - `Sugars, total` (Nutrient ID: `2000`, Unit: `G`)
+- **Advantage**: Replaces estimated recipe-level nutrition with official laboratory measurements.
 
-### 2.4 Cuisine & Dietary Labels
+### 2.3 FlavorDB & Flavor Network Profile
+- **FlavorDB**: 936 food entities mapped to arrays of PubChem molecule IDs and odor profiles (percepts).
+- **Flavor Network (Ahn et al. 2011)**: Complete graph of ingredient-compound links from scientific literature.
+- **Advantage**: Provides complete mathematical basis for Jaccard flavor molecule overlap calculations.
 
-- **Tag Field:** Stored in `tags` as stringified Python list.
-- **Identified Cuisine & Regional Tags (Sample 10k):**
-  - `cuisine`: 4,069 recipes
-  - `north-american`: 2,112 recipes
-  - `european`: 956 recipes
-  - `asian`: 751 recipes
-  - `italian`: 287 recipes
-  - `mexican`: 211 recipes
-  - `indian`: 110 recipes
-  - `french`: 89 recipes
-  - `chinese`: 61 recipes
-  - `greek`: 60 recipes
-  - `japanese`: 31 recipes
-  - `thai`: 23 recipes
+---
 
-### 2.5 Ingredient Name Format
-
-- **Raw Format:** Stringified list of strings without units or quantities. Example: `['winter squash', 'mexican seasoning', 'mixed spice', 'honey', 'butter', 'olive oil', 'salt']`
-- **Pre-cleaned Pickle (`recipes_ingredients_cleaned.pkl`):** Contains column `ingredients_clean` with normalized tokens.
-
-## 3. Immediate Action Items & Questions for the Professor
-
-According to the Week 1 milestone checklist, the following questions must be confirmed with the professor:
-1. **RecipeDB Access**: Bulk database dump vs. REST API (and potential rate limits).
-2. **Nutrients per Ingredient**: Verify whether RecipeDB provides per-ingredient macronutrient densities (calories, saturated fat, protein per 100g) and whether servings are explicitly listed.
-3. **RecipeDB to FlavorDB Mapping**: Confirm whether a pre-computed mapping between RecipeDB ingredient IDs and FlavorDB molecule profiles exists or needs to be constructed via entity resolution.
-4. **Definition of 'Healthier'**: Confirm the placeholder thresholds ($\ge 15\%$ reduction in target nutrient, protein within $20\%$, dietary style preserved).
-5. **Study 1 Labelling Protocol**: Confirm the manual replacement pair evaluation format (~100 Type B replacement pairs with recipe context, 1-3 scale).
+## 3. Leakage-Free Splitting Summary
+- **Cluster Identifier**: MD5 hash of canonical ingredient sets.
+- **Unique Signatures**: 45,064 clusters across 45,772 CulinaryDB recipes.
+- **Partitions**:
+  - **Train**: 32,045 recipes (70.01%)
+    - **Statistics Set ($S$)**: 19,227 recipes (60% of Train / 42.01% of total) — *all statistics derived strictly here*.
+    - **Model Set ($M$)**: 12,818 recipes (40% of Train / 28.00% of total) — *used to fit supervised model*.
+  - **Validation**: 6,864 recipes (15.00%)
+  - **Test**: 6,863 recipes (14.99%)
+- **Integrity**: Zero recipe overlap across splits.
